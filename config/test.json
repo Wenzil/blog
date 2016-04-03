@@ -1,0 +1,7 @@
+{
+  "app": {
+    "name": "blog"
+  },
+  "port": 3000,
+  "db": "postgres://localhost/blog-test"
+}
