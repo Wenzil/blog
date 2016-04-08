@@ -1,15 +1,23 @@
-var express = require('express');
-var Article_1 = require('../models/Article');
-var router = express.Router();
-router.get('/', function (req, res, next) {
-    Article_1.Article.findAll().then(function (articles) {
-        res.render('index', {
-            title: 'Generator-Express MVC',
-            articles: articles
-        });
+'use strict';
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator.throw(value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments)).next());
     });
-});
-module.exports = function (app) {
-    app.use('/', router);
 };
+const Article_1 = require('../models/Article'), ArticleModel = Article_1;
+function createArticle(article) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return ArticleModel.create(article);
+    });
+}
+exports.createArticle = createArticle;
+function getAllArticles() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return ArticleModel.getAll();
+    });
+}
+exports.getAllArticles = getAllArticles;
 //# sourceMappingURL=home.js.map

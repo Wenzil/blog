@@ -1,12 +1,13 @@
-var express = require('express');
-var glob = require('glob');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var compress = require('compression');
-var methodOverride = require('method-override');
+"use strict";
+const express = require('express');
+const glob = require('glob');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const compress = require('compression');
+const methodOverride = require('method-override');
 function default_1(app, config) {
-    var env = process.env.NODE_ENV || 'development';
+    let env = process.env.NODE_ENV || 'development';
     app.locals.ENV = env;
     app.locals.ENV_DEVELOPMENT = env === 'development';
     app.set('views', config.root + '/app/views');
@@ -21,12 +22,12 @@ function default_1(app, config) {
     app.use(compress());
     app.use(express.static(config.root + '/public'));
     app.use(methodOverride());
-    var controllers = glob.sync(config.root + '/app/controllers/*.js');
+    let controllers = glob.sync(config.root + '/app/controllers/*.js');
     controllers.forEach(function (controller) {
         require(controller)(app);
     });
     app.use(function (req, res, next) {
-        var err = new Error('Not Found');
+        let err = new Error('Not Found');
         err.status = 404;
         next(err);
     });

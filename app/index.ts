@@ -1,17 +1,20 @@
+'use strict';
 
-import * as express from 'express';
-import * as Sequelize from 'sequelize';
-import bootstrapConfig from './bootstrap/config';
-import bootstrapExpress from './bootstrap/express';
-import bootstrapModels from './bootstrap/models';
+import * as hapi from 'hapi';
+import * as config from './config';
+import bootstrapRoutes from './bootstrap/routes';
+import bootstrapPlugins from './bootstrap/plugins';
 
-let config = bootstrapConfig();
-let app = express();
-let sequelize = new Sequelize(config.db);
+const server = new hapi.Server();
 
-bootstrapExpress(app, config);
-bootstrapModels(sequelize, config);
+server.connection({ port: config.PORT });
+bootstrapPlugins(server);
+bootstrapRoutes(server);
 
-app.listen(config.port, function() {
-  console.log('Express server listening on port ' + config.port);
+server.start(function(err) {
+  if (err) {
+    throw err;
+  }
+
+  console.log(`Server running at: ${server.info.uri}`);
 });
