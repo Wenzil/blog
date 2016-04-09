@@ -1,19 +1,44 @@
-import {Sequelize, DataTypes, Model} from 'sequelize';
+import * as _ from 'lodash';
 
-interface ArticleInstance {
-  title: string;
-  url: string;
-  text: string;
+export default class Article {
+  constructor(data) {
+    this.id = data.id;
+    this.title = data.title;
+    this.contents = data.contents;
+  }
+
+  public id: number;
+  public title: string;
+  public contents: string;
 }
 
-export let Article: Model<ArticleInstance, {}>;
+const internalArticle = new Article({
+  id: 1,
+  title: 'Some Article',
+  contents: 'Hello world!'
+});
 
-export default function(sequelize: Sequelize, DataTypes: DataTypes) {
-  Article = sequelize.define<ArticleInstance, {}>('Article', {
-    title: DataTypes.STRING,
-    url: DataTypes.STRING,
-    text: DataTypes.STRING
-  });
+export async function create(article: Article) {
+  return Promise.resolve(Object.assign(article, { id: 2 }));
+}
 
-  return Article;
-};
+export async function get(id: number) {
+  return Promise.resolve(internalArticle);
+}
+
+export async function getMultiple(ids: number[]) {
+  let articles = [internalArticle].filter(a => _.includes(ids, a.id));
+  return Promise.resolve(articles);
+}
+
+export async function getAll() {
+  return Promise.resolve([internalArticle]);
+}
+
+export async function remove(id: number) {
+  return Promise.resolve();
+}
+
+export async function update(id: number, article: Article) {
+  return Promise.resolve(article);
+}

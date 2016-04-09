@@ -1,17 +1,11 @@
-import * as express from 'express';
-import {Article} from '../models/Article';
+'use strict';
 
-let router = express.Router();
+import Article, * as ArticleModel from '../models/Article';
 
-export = function(app: express.Express) {
-  app.use('/', router);
-};
+export async function createArticle(article: Article) {
+  return ArticleModel.create(article);
+}
 
-router.get('/', function(req: express.Request, res: express.Response, next) {
-  Article.findAll().then(function(articles) {
-    res.render('index', {
-      title: 'Generator-Express MVC',
-      articles: articles
-    });
-  });
-});
+export async function getAllArticles() {
+  return ArticleModel.getAll();
+}

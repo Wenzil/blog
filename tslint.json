@@ -31,8 +31,7 @@
     "member-ordering": [
       true,
       "public-before-private",
-      "static-before-instance",
-      "variables-before-functions"
+      "static-before-instance"
     ],
     "no-any": false,
     "no-arg": true,
@@ -56,8 +55,8 @@
     "no-eval": true,
     "no-inferrable-types": false,
     "no-internal-module": true,
-    "no-null-keyword": true,
-    "no-require-imports": true,
+    "no-null-keyword": false,
+    "no-require-imports": false,
     "no-shadowed-variable": true,
     "no-string-literal": false,
     "no-switch-case-fall-through": true,
