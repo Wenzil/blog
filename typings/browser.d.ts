@@ -1,3 +1,4 @@
+/// <reference path="browser/ambient/async/index.d.ts" />
 /// <reference path="browser/ambient/boom/index.d.ts" />
 /// <reference path="browser/ambient/hapi/index.d.ts" />
 /// <reference path="browser/ambient/joi/index.d.ts" />
