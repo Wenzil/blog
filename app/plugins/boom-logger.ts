@@ -10,7 +10,7 @@ function logBoomError(request: hapi.Request, reply: hapi.IReply) {
     let formattedRequestPayload = request.payload
       ? `\nRequest Payload: ${JSON.stringify(request.payload, null, 2)}`
       : '';
-    let formattedErrorMessage = err.payload.message || '';
+    let formattedErrorMessage = `\n${err.payload.message}` || '';
     let formattedError =
       `${formattedUrl} (${err.statusCode}) ${err.payload.error}${formattedErrorMessage}${formattedCredentials}${formattedRequestPayload}`;
 
