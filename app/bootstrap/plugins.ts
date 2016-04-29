@@ -29,7 +29,8 @@ export default function(server: hapi.Server) {
     if (err) {
       console.error('Could not register plugins:', err);
       process.exit(0);
+    } else {
+      server.auth.strategy('jwt', 'jwt', false, authOptions);
     }
-    server.auth.strategy('jwt', 'jwt', false, authOptions);
   });
 }

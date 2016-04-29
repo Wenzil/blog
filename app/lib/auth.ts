@@ -37,7 +37,7 @@ export async function generateHash(password: string, salt?: string) {
         salt = salt || new Buffer(bytes).toString('hex')
         crypto.pbkdf2(password, salt, 7000, 256, next);
       }
-    )(null, function(err, bytes) {
+    )(null, (err, bytes) => {
       if (err) {
         reject(err);
       } else {

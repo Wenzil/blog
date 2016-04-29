@@ -11,6 +11,8 @@ server.start(function (err) {
     if (err) {
         throw err;
     }
-    console.log(`Server running at: ${server.info.uri}`);
+    else {
+        console.log(`Server running at: ${server.info.uri}`);
+    }
 });
 //# sourceMappingURL=index.js.map
