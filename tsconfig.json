@@ -4,10 +4,11 @@
     "module": "commonjs",
     "sourceMap": true,
     "watch": false,
-    "outDir": "bin"
+    "outDir": "bin",
+    "noUnusedParameters": true,
+    "noUnusedLocals": true
   },
-  "exclude": [
-    "typings/browser",
-    "typings/browser.d.ts"
+  "include": [
+      "lib/**/*"
   ]
 }

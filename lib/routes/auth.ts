@@ -4,12 +4,12 @@ import * as hapi from 'hapi';
 import * as Boom from 'boom';
 import * as Joi from 'joi';
 import * as AuthController from '../controllers/auth';
-import Err from '../lib/err';
+import Err from '../util/err';
 
-const routes: hapi.IRouteConfiguration[] = [
+export default [
   {
     method: 'POST',
-    path: '/login',
+    path: '/api/auth/login',
     config: {
       validate: {
         payload: Joi.object()
@@ -30,7 +30,7 @@ const routes: hapi.IRouteConfiguration[] = [
       AuthController.login(username, password)
         .then(token => reply({ token }))
         .catch((err: Err) => {
-          switch (err.type) {
+          switch (err.code) {
             case 'Invalid Credentials':
               reply(Boom.unauthorized(err.message));
               break;
@@ -39,11 +39,11 @@ const routes: hapi.IRouteConfiguration[] = [
               reply(Boom.badImplementation('Could not login', err));
           }
         });
-    },
+    }
   },
   {
     method: 'POST',
-    path: '/signup',
+    path: '/api/auth/signup',
     config: {
       validate: {
         payload: Joi.object()
@@ -64,36 +64,26 @@ const routes: hapi.IRouteConfiguration[] = [
                 '- The password must contain one or more uppercase characters' +
                 '- The password must contain one or more lowercase characters' +
                 '- The password must contain one or more numeric values' +
-                '- The password must contain one or more special characters'),
-            password_confirmation: Joi.string()
-              .required()
-              .description('The password confirmation')
+                '- The password must contain one or more special characters')
           })
       }
     },
     handler(request: hapi.Request, reply: hapi.IReply) {
       const username = request.payload['username'];
       const password = request.payload['password'];
-      const passwordConfirmation = request.payload['password_confirmation'];
 
-      AuthController.createAccount(username, password, passwordConfirmation)
+      AuthController.createAccount(username, password)
         .then(token => reply({ token }))
         .catch((err: Err) => {
-          switch (err.type) {
+          switch (err.code) {
             case 'Account already exists':
               reply(Boom.conflict(err.message));
-              break;
-
-            case 'Password does not match confirmation':
-              reply(Boom.badData(err.message));
               break;
 
             default:
               reply(Boom.badImplementation('Could not signup', err));
           }
         });
-    },
-  },
+    }
+  }
 ];
-
-export default routes;

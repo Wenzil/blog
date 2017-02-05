@@ -25,7 +25,7 @@ function logBoomError(request: hapi.Request, reply: hapi.IReply) {
   }
 };
 
-function register(server: hapi.Server, options, done) {
+function register(server: hapi.Server, _, done) {
   server.ext('onPreResponse', logBoomError);
   done();
 }
@@ -34,8 +34,8 @@ export default {
   register: Object.assign(register, {
      attributes: {
        name: 'boom-logger',
-       version : '0.1.0',
-     },
-   }),
+       version : '0.1.0'
+     }
+   })
 };
 

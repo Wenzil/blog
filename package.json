@@ -1,7 +1,7 @@
 {
   "name": "blog",
   "version": "0.1.0",
-  "description": "Sami Turcotte's ramblings...",
+  "description": "Sami Turcotte's Blog",
   "keywords": [
     "blog",
     "sami",
@@ -13,22 +13,32 @@
   ],
   "author": "Sami Turcotte",
   "private": true,
-  "main": "app/index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "start": "app/index.js"
+    "start": "node lib/index.js",
+    "lint": "tslint --project .\tsconfig.json"
   },
   "dependencies": {
-    "async": "^2.0.0-rc.3",
-    "boom": "^3.1.2",
-    "hapi": "^13.3.0",
-    "hapi-auth-jwt2": "^5.8.0",
+    "@types/async": "^2.0.32",
+    "@types/boom": "0.0.32",
+    "@types/hapi": "^13.0.37",
+    "@types/joi": "^9.0.33",
+    "@types/jsonwebtoken": "^7.1.33",
+    "@types/lodash": "^4.14.38",
+    "async": "^2.1.2",
+    "boom": "^4.2.0",
+    "hapi": "^15.2.0",
+    "hapi-auth-jwt2": "^7.2.0",
+    "inert": "^4.0.2",
     "jade": "^1.11.0",
-    "joi": "^8.0.5",
-    "jsonwebtoken": "^5.7.0",
-    "lodash": "^4.7.0",
-    "redis": "^2.6.0-1"
+    "joi": "^9.2.0",
+    "jsonwebtoken": "^7.1.9",
+    "lodash": "^4.16.6",
+    "redis": "^2.6.3",
+    "vue": "^2.0.5"
   },
   "devDependencies": {
-    "gulp": "^3.9.0"
+    "tslint": "^3.15.1",
+    "webpack": "^1.13.3"
   }
 }

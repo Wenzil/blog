@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 import * as hapi from 'hapi';
 import * as config from '../config';
 
-export default function(server: hapi.Server) {
+export default async function(server: hapi.Server) {
   const routeDir = path.join(config.APP_ROOT, '/routes');
   const routeGroups = fs.readdirSync(routeDir)
     .filter(file => path.extname(file) === '.js')
@@ -15,4 +15,5 @@ export default function(server: hapi.Server) {
   const routes = _.flatten(routeGroups);
 
   routes.forEach(route => server.route(route));
+  return Promise.resolve();
 }

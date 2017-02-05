@@ -8,13 +8,10 @@ import bootstrapPlugins from './bootstrap/plugins';
 const server = new hapi.Server();
 
 server.connection({ port: config.PORT });
-bootstrapPlugins(server);
-bootstrapRoutes(server);
 
-server.start(function(err) {
-  if (err) {
-    throw err;
-  } else {
-    console.log(`Server running at: ${server.info.uri}`);
-  }
-});
+bootstrapPlugins(server)
+  .then(() => bootstrapRoutes(server))
+  .then(() => server.start())
+  .then(() => console.log(`Server running at: ${server.info.uri}`))
+  .catch(err => { throw err; });
+
