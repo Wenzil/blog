@@ -1,1 +1,3 @@
-declare module 'hapi-auth-jwt2' {}
+declare interface Array<T> {
+  includes: (searchElement: T, fromIndex?: number) => boolean;
+}

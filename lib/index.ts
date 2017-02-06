@@ -1,17 +1,25 @@
-'use strict';
+import * as Koa from 'koa';
+import * as bodyParser from 'koa-bodyparser';
 
-import * as hapi from 'hapi';
 import * as config from './config';
-import bootstrapRoutes from './bootstrap/routes';
-import bootstrapPlugins from './bootstrap/plugins';
+import * as errorLogger from './util/error-logger';
+import errorHandler from './middleware/error-handler';
+import contentNegotiation from './middleware/content-negotation';
+import notFound from './middleware/not-found';
+import router from './routes';
 
-const server = new hapi.Server();
+export const app = new Koa();
 
-server.connection({ port: config.PORT });
+app
+  .use(errorHandler)
+  .use(contentNegotiation)
+  .use(bodyParser())
+  .use(router.routes())
+  .use(router.allowedMethods())
+  .use(notFound);
 
-bootstrapPlugins(server)
-  .then(() => bootstrapRoutes(server))
-  .then(() => server.start())
-  .then(() => console.log(`Server running at: ${server.info.uri}`))
-  .catch(err => { throw err; });
+app.listen(config.PORT, () => console.log(`Listening on port ${config.PORT}`));
 
+app.on('error', (err, ctx: Koa.Context) => {
+  errorLogger.logError(err, ctx);
+});

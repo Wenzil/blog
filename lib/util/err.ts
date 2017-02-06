@@ -1,6 +1,4 @@
-'use strict';
-
-export type ErrorCode = 'Invalid Credentials'
+export type ErrorCode = 'Invalid password'
   | 'Account not found'
   | 'Account already exists'
   | 'Post not found';

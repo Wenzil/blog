@@ -1,48 +1,34 @@
-'use strict';
+import * as Router from 'koa-router';
+import * as jwt from 'koa-jwt';
 
-import * as hapi from 'hapi';
-import * as Boom from 'boom';
-import * as Joi from 'joi';
+import * as config from '../config';
 import * as PostController from '../controllers/post';
 import Post from '../models/post';
+import PostSchema from '../schemas/post';
+import requestValidation from '../middleware/request-validation';
 
-export default [
-  {
-    method: 'GET',
-    path: '/api/post',
-    handler(_, reply: hapi.IReply) {
-      PostController.getAllPosts()
-        .then(reply)
-        .catch(() => reply(Boom.badImplementation('Could not retrieve all posts')));
-    }
-  },
-  {
-    method: 'POST',
-    path: '/api/post',
-    config: {
-      auth: 'jwt',
-      validate: {
-        payload: Joi.object()
-          .keys({
-            title: Joi.string()
-              .min(1)
-              .max(255)
-              .required()
-              .description('The title of the blog post'),
-            contents: Joi.string()
-              .min(1)
-              .max(10000)
-              .required()
-              .description('The contents of the blog post')
-          })
-      }
-    },
-    handler(request: hapi.Request, reply: hapi.IReply) {
-      const post: Post = request.payload;
+const router = new Router();
 
-      PostController.createPost(post)
-        .then(reply)
-        .catch(err => reply(Boom.badImplementation('Could not create new post', err)));
-    }
+router.get(
+  '/',
+  async (ctx) => {
+    const posts = await PostController.getAllPosts();
+    ctx.body = posts;
   }
-];
+);
+
+router.post(
+  '/',
+  jwt({ secret: config.JWT_SECRET }),
+  requestValidation({ body: PostSchema }),
+  async (ctx) => {
+    const author = ctx.state.user.sub;
+    const post: Post = ctx.request.body;
+    const createdPost = await PostController.createPost(author, post);
+    ctx.body = createdPost;
+  }
+);
+
+// TODO: Implement update own post route
+
+export default router;
