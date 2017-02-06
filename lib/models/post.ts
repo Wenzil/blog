@@ -3,6 +3,7 @@ import Err from '../util/err';
 
 interface Post {
   id?: number;
+  author: string;
   title: string;
   contents: string;
 }
@@ -12,6 +13,7 @@ export default Post;
 let internalPosts = [
   {
     id: 1,
+    author: 'admin',
     title: 'Some blog post',
     contents: 'Hello world!'
   }
@@ -19,11 +21,12 @@ let internalPosts = [
 
 /**
  * Create a new blog post
+ * @param author - The username of the author
  */
-export async function create(post: Post) {
+export async function create(author: string, post: Post) {
   const latestPost = _.maxBy(internalPosts, p => p.id);
   const latestPostId = latestPost ? latestPost.id : 0;
-  const newPost = Object.assign({ id: 0 }, post, { id: latestPostId + 1 });
+  const newPost = { ...post, id: latestPostId + 1, author };
 
   internalPosts.push(newPost);
   return Promise.resolve(newPost);
@@ -65,7 +68,7 @@ export async function update(id: number, post: Post) {
 
   if (existingPost) {
     const index = internalPosts.indexOf(existingPost);
-    const updatedPost = Object.assign({}, existingPost, post);
+    const updatedPost = { ...existingPost, ...post, author: existingPost.author, id: existingPost.id };
     internalPosts[index] = updatedPost;
     return Promise.resolve(updatedPost);
   } else {

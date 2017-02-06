@@ -1,37 +1,46 @@
-'use strict';
-
 import * as JWT from 'jsonwebtoken';
 import * as config from '../config';
-import * as AccountModel from '../models/account';
+import Account, * as AccountModel from '../models/account';
 import Err from '../util/err';
+
+const MsInSecond = 1000;
+const SecondsInWeek = 60 * 60 * 24 * 7;
 
 /**
  * Create a new user account
  *
- * @param   username  The entered username
- * @param   password  The entered password
- * @returns           A new signed JWT token
+ * @param username - The entered username
+ * @param password - The entered password
+ * @returns A new signed JWT token
  */
 export async function createAccount(username: string, password: string) {
   const account = await AccountModel.create(username, password);
-
-  return JWT.sign(account, config.JWT_SECRET);
+  const jwtPayload = toJWTPayload(account);
+  return JWT.sign(jwtPayload, config.JWT_SECRET,);
 }
 
 /**
  * Login a user
  *
- * @param   username  The entered username
- * @param   password  The entered password
- * @returns           A new signed JWT token
+ * @param username - The entered username
+ * @param password - The entered password
+ * @returns A new signed JWT token
  */
 export async function login(username: string, password: string) {
-  const account = await AccountModel.tryGet(username);
+  const account = await AccountModel.get(username);
   const isValidPassword = await AccountModel.isValidPassword(account, password);
+  const jwtPayload = toJWTPayload(account);
 
   if (!isValidPassword) {
-    throw new Err('Invalid Credentials');
+    throw new Err('Invalid password');
   } else {
-    return JWT.sign(account, config.JWT_SECRET);
+    return JWT.sign(jwtPayload, config.JWT_SECRET);
   }
+}
+
+function toJWTPayload(account: Account) {
+  return {
+    sub: account.username,
+    exp: Math.floor(Date.now() / MsInSecond) + SecondsInWeek
+  };
 }
