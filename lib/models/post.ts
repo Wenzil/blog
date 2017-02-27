@@ -4,8 +4,10 @@ import Err from '../util/err';
 interface Post {
   id?: number;
   author: string;
+  isEditorial: boolean;
+  timestamp: number;
   title: string;
-  contents: string;
+  body: string;
 }
 
 export default Post;
@@ -14,23 +16,12 @@ let internalPosts = [
   {
     id: 1,
     author: 'admin',
+    isEditorial: true,
+    timestamp: Date.now(),
     title: 'Some blog post',
-    contents: 'Hello world!'
+    body: 'Hello world!'
   }
 ];
-
-/**
- * Create a new blog post
- * @param author - The username of the author
- */
-export async function create(author: string, post: Post) {
-  const latestPost = _.maxBy(internalPosts, p => p.id);
-  const latestPostId = latestPost ? latestPost.id : 0;
-  const newPost = { ...post, id: latestPostId + 1, author };
-
-  internalPosts.push(newPost);
-  return Promise.resolve(newPost);
-}
 
 /**
  * Retrieve a blog post
@@ -54,38 +45,63 @@ export async function getMultiple(ids: number[]) {
 }
 
 /**
- * Retrieve all blog posts
+ * Retrieve all editorial blog posts
  */
-export async function getAll() {
-  return Promise.resolve(internalPosts);
+export async function getEditorial() {
+  return Promise.resolve(internalPosts.filter(p => p.isEditorial));
 }
 
 /**
- * Update a blog post
+ * Retrieve all blog posts of an author
  */
-export async function update(id: number, post: Post) {
+export async function getByAuthor(author) {
+  return Promise.resolve(internalPosts.filter(p => p.author === author));
+}
+
+/**
+ * Create a new blog post on behalf of an author
+ * @param author - The username of the author
+ * @param post - The data from which to create the new blog post
+ */
+export async function create(author: string, post: Post) {
+  const latestPost = _.maxBy(internalPosts, p => p.id);
+  const latestPostId = latestPost ? latestPost.id : 0;
+  const newPost = { ...post, id: latestPostId + 1, author };
+
+  internalPosts.push(newPost);
+  return Promise.resolve(newPost);
+}
+
+/**
+ * Update a blog post on behalf of an author
+ */
+export async function update(author: string, id: number, post: Post) {
   const existingPost = internalPosts.find(p => p.id === id);
 
-  if (existingPost) {
+  if (!existingPost) {
+    return Promise.reject(new Err('Post not found'));
+  } else if (existingPost.author !== author) {
+    return Promise.reject(new Err('Forbidden access'));
+  } else {
     const index = internalPosts.indexOf(existingPost);
-    const updatedPost = { ...existingPost, ...post, author: existingPost.author, id: existingPost.id };
+    const updatedPost = { ...existingPost, ...post };
     internalPosts[index] = updatedPost;
     return Promise.resolve(updatedPost);
-  } else {
-    return Promise.reject(new Err('Post not found'));
   }
 }
 
 /**
- * Remove a blog post
+ * Remove a blog post on behalf of an author
  */
-export async function remove(id: number) {
+export async function remove(author: string, id: number) {
   const post = internalPosts.find(post => post.id === id);
 
-  if (post) {
+  if (!post) {
+    return Promise.reject(new Err('Post not found'));
+  } else if (post.author !== author) {
+    return Promise.reject(new Err('Forbidden access'));
+  } else {
     internalPosts = internalPosts.filter(p => p.id !== id);
     return Promise.resolve(post);
-  } else {
-    return Promise.reject(new Err('Post not found'));
   }
 }

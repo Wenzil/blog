@@ -2,9 +2,12 @@ import * as Koa from 'koa';
 import {ErrorCode} from '../util/err';
 
 const statusByErrorCode: { [E in ErrorCode]: number } = {
+  'Unmet password requirements': 400,
   'Invalid password': 401,
+  'Forbidden access': 403,
   'Account not found': 404,
   'Post not found': 404,
+  'Draft not found': 404,
   'Account already exists': 409
 };
 

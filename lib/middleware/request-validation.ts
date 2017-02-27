@@ -2,9 +2,9 @@ import * as Joi from 'joi';
 import * as Router from 'koa-router';
 
 interface Options {
-  params?: Joi.Schema;
-  query?: Joi.Schema;
-  body?: Joi.Schema;
+  params?: Object | Joi.Schema;
+  query?: Object | Joi.Schema;
+  body?: Object | Joi.Schema;
 }
 
 export default function (options: Options) {
@@ -24,7 +24,7 @@ async function validateRequest(options: Options, ctx: Router.IRouterContext, nex
   await next();
 };
 
-function validate(data: Object, schema: Joi.Schema, ctx: Router.IRouterContext) {
+function validate(data: Object, schema: Object | Joi.Schema, ctx: Router.IRouterContext) {
   const validation = Joi.validate(data, schema);
   if (validation.error) {
     ctx.throw(validation.error.message, 400);

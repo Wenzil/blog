@@ -5,6 +5,7 @@ interface Account {
   username: string;
   hash: string;
   salt: string;
+  isEditor: boolean;
 }
 export default Account;
 
@@ -13,14 +14,14 @@ let internalAccounts: Account[] = [];
 /**
  * Create a new user account
  */
-export async function create(username: string, password: string) {
+export async function create(username: string, password: string, isEditor = false) {
   const existingAccount = internalAccounts.find(acc => acc.username === username);
 
   if (existingAccount) {
     return Promise.reject<Account>(new Err('Account already exists'));
   } else {
     const { hash, salt } = await generateHash(password);
-    const account = { username, hash, salt };
+    const account = { username, hash, salt, isEditor };
 
     internalAccounts.push(account);
     return Promise.resolve(account);

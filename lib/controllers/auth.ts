@@ -13,10 +13,10 @@ const SecondsInWeek = 60 * 60 * 24 * 7;
  * @param password - The entered password
  * @returns A new signed JWT token
  */
-export async function createAccount(username: string, password: string) {
+export async function signup(username: string, password: string) {
   const account = await AccountModel.create(username, password);
   const jwtPayload = toJWTPayload(account);
-  return JWT.sign(jwtPayload, config.JWT_SECRET,);
+  return JWT.sign(jwtPayload, config.JWT_SECRET);
 }
 
 /**
@@ -40,7 +40,8 @@ export async function login(username: string, password: string) {
 
 function toJWTPayload(account: Account) {
   return {
+    exp: Math.floor(Date.now() / MsInSecond) + SecondsInWeek,
     sub: account.username,
-    exp: Math.floor(Date.now() / MsInSecond) + SecondsInWeek
+    isEditor: account.isEditor
   };
 }

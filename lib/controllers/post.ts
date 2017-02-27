@@ -1,9 +1,25 @@
 import Post, * as PostModel from '../models/post';
+/**
+ * Retrieve all editorial posts
+ * @returns all editorial posts
+ */
+export async function getEditorialPosts() {
+  return PostModel.getEditorial();
+}
 
 /**
- * Create a new blog post
+ * Retrieve all posts of an author
  * @param author - The username of the author
- * @param post - The post data to from which to create a new blog post
+ * @returns all posts of the author
+ */
+export async function getPostsByAuthor(author: string) {
+  return PostModel.getByAuthor(author);
+}
+
+/**
+ * Create a new blog post on behalf of an author
+ * @param author - The username of the author
+ * @param post - The data from which to create the new blog post
  * @returns The created blog post
  */
 export async function createPost(author: string, post: Post) {
@@ -11,9 +27,22 @@ export async function createPost(author: string, post: Post) {
 }
 
 /**
- * Retrieve all posts
- * @returns All posts
+ * Update a blog post on behalf of an author
+ * @param author - The username of the author
+ * @param postId - The id of the post to update
+ * @param post - The data from which to update the blog post
+ * @returns The updated blog post
  */
-export async function getAllPosts() {
-  return PostModel.getAll();
+export async function updatePost(author: string, postId: number, post: Post) {
+  return PostModel.update(author, postId, post);
+}
+
+/**
+ * Remove a blog post on behalf of an author
+ * @param author - The username of the author
+ * @param postId - The id of the post to remove
+ * @returns The removed blog post
+ */
+export async function removePost(author: string, postId: number) {
+  return PostModel.remove(author, postId);
 }

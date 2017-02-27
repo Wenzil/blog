@@ -12,7 +12,7 @@ router.post(
   async (ctx) => {
     const username = ctx.request.body.username;
     const password = ctx.request.body.password;
-    const token = await AuthController.createAccount(username, password);
+    const token = await AuthController.signup(username, password);
 
     ctx.body = { token };
   }

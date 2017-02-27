@@ -1,4 +1,10 @@
 import * as Joi from 'joi';
+import Err from '../util/err';
+
+const minPasswordLength = 8;
+const unmetPasswordRequirements =
+`The password must contain at least ${minPasswordLength} characters including one uppercase,
+ one lowercase and one numeric character`;
 
 export default Joi.object()
   .keys({
@@ -9,14 +15,10 @@ export default Joi.object()
       .required()
       .description('The username of the account to create'),
     password: Joi.string()
-      .min(8)
-      .max(256)
-      .regex(/(?=^.{8,36}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)
+      .min(minPasswordLength)
+      .max(36)
+      .regex(/(?=.*\d)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/)
       .required()
-      .description('The password of the account to create' +
-        '- The password length must be greater than or equal to 8' +
-        '- The password must contain one or more uppercase characters' +
-        '- The password must contain one or more lowercase characters' +
-        '- The password must contain one or more numeric values' +
-        '- The password must contain one or more special characters')
+      .description('The password of the account to create')
+      .error(new Err('Unmet password requirements', unmetPasswordRequirements))
   });
