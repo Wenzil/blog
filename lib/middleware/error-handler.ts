@@ -8,7 +8,8 @@ const statusByErrorCode: { [E in ErrorCode]: number } = {
   'Account not found': 404,
   'Post not found': 404,
   'Draft not found': 404,
-  'Account already exists': 409
+  'Account already exists': 409,
+  'Unrecognized image format': 422
 };
 
 export default async function errorHandler(ctx: Koa.Context, next: () => Promise<any>) {

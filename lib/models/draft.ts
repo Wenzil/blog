@@ -28,7 +28,8 @@ export async function getByAuthor(author) {
 export async function create(author: string, draft: Draft) {
   const latestDraft = _.maxBy(internalDrafts, d => d.id);
   const latestDraftId = latestDraft ? latestDraft.id : 0;
-  const newDraft = { ...draft, id: latestDraftId + 1, author };
+  const postId = draft.postId || null;
+  const newDraft = { ...draft, id: latestDraftId + 1, author, postId };
 
   internalDrafts.push(newDraft);
   return Promise.resolve(newDraft);

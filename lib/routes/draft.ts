@@ -7,9 +7,11 @@ import * as DraftController from '../controllers/draft';
 import Draft from '../models/draft';
 import DraftSchema from '../schemas/draft';
 import requestValidation from '../middleware/request-validation';
+import contentTypeValidation from '../middleware/content-type-validation';
 
 const router = new Router();
 
+// TODO: support paging
 router.get(
   '/me/draft',
   jwt({ secret: config.JWT_SECRET }),
@@ -23,6 +25,7 @@ router.get(
 router.post(
   '/me/draft',
   jwt({ secret: config.JWT_SECRET }),
+  contentTypeValidation('application/json'),
   requestValidation({ body: DraftSchema }),
   async (ctx) => {
     const author = ctx.state.user.sub;
@@ -38,9 +41,12 @@ router.post(
 router.put(
   '/me/draft/:draftId',
   jwt({ secret: config.JWT_SECRET }),
+  contentTypeValidation('application/json'),
   requestValidation({
     params: { draftId: Joi.number() },
-    body: DraftSchema
+    body: DraftSchema.keys({
+      postId: Joi.forbidden()
+    })
   }),
   async (ctx) => {
     const author = ctx.state.user.sub;

@@ -3,11 +3,13 @@ import * as AuthController from '../controllers/auth';
 import SignupSchema from '../schemas/signup';
 import LoginSchema from '../schemas/login';
 import requestValidation from '../middleware/request-validation';
+import contentTypeValidation from '../middleware/content-type-validation';
 
-const router = new Router();
+const router = new Router({ prefix: '/auth' });
 
 router.post(
   '/signup',
+  contentTypeValidation('application/json'),
   requestValidation({ body: SignupSchema }),
   async (ctx) => {
     const username = ctx.request.body.username;
@@ -20,6 +22,7 @@ router.post(
 
 router.post(
   '/login',
+  contentTypeValidation('application/json'),
   requestValidation({ body: LoginSchema }),
   async (ctx) => {
     const username = ctx.request.body.username;

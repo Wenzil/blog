@@ -7,9 +7,11 @@ import * as PostController from '../controllers/post';
 import Post from '../models/post';
 import DraftSchema from '../schemas/post';
 import requestValidation from '../middleware/request-validation';
+import contentTypeValidation from '../middleware/content-type-validation';
 
 const router = new Router();
 
+// TODO: Support paging
 router.get(
   '/me/post',
   jwt({ secret: config.JWT_SECRET }),
@@ -23,6 +25,7 @@ router.get(
 router.post(
   '/me/post',
   jwt({ secret: config.JWT_SECRET }),
+  contentTypeValidation('application/json'),
   requestValidation({ body: DraftSchema }),
   async (ctx) => {
     const author = ctx.state.user.sub;
@@ -40,6 +43,7 @@ router.post(
 router.put(
   '/me/post/:postId',
   jwt({ secret: config.JWT_SECRET }),
+  contentTypeValidation('application/json'),
   requestValidation({
     params: { postId: Joi.number() },
     body: DraftSchema
@@ -72,6 +76,7 @@ router.delete(
   }
 );
 
+// TODO: Support paging
 router.get(
   '/author/:author/post',
   async (ctx) => {
@@ -81,6 +86,7 @@ router.get(
   }
 );
 
+// TODO: Support paging
 // TODO: Support filtering by author, editorial and tags
 router.get(
   '/post',

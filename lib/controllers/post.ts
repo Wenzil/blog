@@ -1,7 +1,7 @@
 import Post, * as PostModel from '../models/post';
 /**
  * Retrieve all editorial posts
- * @returns all editorial posts
+ * @returns All editorial posts
  */
 export async function getEditorialPosts() {
   return PostModel.getEditorial();
@@ -10,7 +10,7 @@ export async function getEditorialPosts() {
 /**
  * Retrieve all posts of an author
  * @param author - The username of the author
- * @returns all posts of the author
+ * @returns All posts of the author
  */
 export async function getPostsByAuthor(author: string) {
   return PostModel.getByAuthor(author);

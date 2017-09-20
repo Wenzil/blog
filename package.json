@@ -34,7 +34,9 @@
     "koa-bodyparser": "^2.3.0",
     "koa-jwt": "^2.2.2",
     "koa-router": "^7.1.0",
-    "lodash": "^4.16.6"
+    "lodash": "^4.16.6",
+    "mysah": "../mysah",
+    "probe-image-size": "^3.0.0"
   },
   "devDependencies": {
     "@types/koa": "^2.0.38",

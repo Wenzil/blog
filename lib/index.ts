@@ -23,3 +23,7 @@ app.listen(config.PORT, () => console.log(`Listening on port ${config.PORT}`));
 app.on('error', (err, ctx: Koa.Context) => {
   errorLogger.logError(err, ctx);
 });
+
+process.on('uncaughtException', err => {
+  console.error(err);
+});

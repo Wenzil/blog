@@ -4,6 +4,7 @@ export default Joi.object()
   .keys({
     postId: Joi.number()
       .optional()
+      .allow(null)
       .description('The id of the blog post being modified'),
     title: Joi.string()
       .min(1)

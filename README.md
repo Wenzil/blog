@@ -1,6 +1,11 @@
 # Blogging platform
 
-## Description
+## Warning
+
+This repo was put on GitHub for my own convenience. It is not actually ready for public
+consumption. Use at your own risk!
+
+## Overview
 
 A platform for anyone to find, read, write, comment on, tag and publish blog articles
 about wide variety of subjects and interests.
@@ -8,6 +13,11 @@ about wide variety of subjects and interests.
 Editors can hand-pick blog articles written by the community for featuring on the
 front page. Blog articles written by editors are featured on the front page by default.
 Users can search blog articles by author and by tags.
+
+## Media management
+
+Users can upload images and render them in blog articles using Markdown. Images are
+publicly accessible but can only be renamed and deleted by the user who uploaded them.
 
 ## Hosting considerations
 

@@ -4,7 +4,8 @@ export type ErrorCode = 'Invalid password'
   | 'Post not found'
   | 'Draft not found'
   | 'Unmet password requirements'
-  | 'Forbidden access';
+  | 'Forbidden access'
+  | 'Unrecognized image format';
 
 export default class Err extends Error {
   public code: ErrorCode;

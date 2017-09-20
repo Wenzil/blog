@@ -3,7 +3,7 @@ import Draft, * as DraftModel from '../models/draft';
 /**
  * Retrieve all drafts of an author
  * @param author - The username of the author
- * @returns all drafts of the author
+ * @returns All drafts of the author
  */
 export async function getDraftsByAuthor(author: string) {
   return DraftModel.getByAuthor(author);
